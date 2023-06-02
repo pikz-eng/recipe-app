@@ -17,7 +17,8 @@
                         <h3>{{ selectedRecipe.title }}
                             <span class="badge badge-secondary">New</span>
                         </h3>
-                        <p>Amount: {{ selectedRecipe.amount }}$</p>
+                        <p>Amount: {{ selectedRecipe.amount }}</p>
+                        <p>Unit: {{ selectedRecipe.unit}}</p>
                         <p>Original Name: {{ selectedRecipe.originalName }}</p>
                         <p>Summary:<span v-html="selectedRecipe.summary"></span></p>
 

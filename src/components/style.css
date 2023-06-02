@@ -23,7 +23,7 @@ ul {
 li {
     flex-basis: calc(33.33% - 20px);
     margin-bottom: 20px;
-    cursor: pointer;
+    cursor:pointer;
 }
 li:hover {
     transform: translateY(-3px);

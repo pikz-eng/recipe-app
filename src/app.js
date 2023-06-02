@@ -34,7 +34,8 @@ export default {
                 .get('https://api.spoonacular.com/recipes/findByIngredients', {
                     params: {
                         ingredients: this.searchInput,
-                        apiKey: '7bdf08411f7b4f11bd50b890000b3e58',
+                        apiKey: 'b942af6e9ba143c4a7ebaccc6013bcb0',
+                        number: 12
                     }
                 })
                 .then(response => {
@@ -58,13 +59,14 @@ export default {
             axios
                 .get(`https://api.spoonacular.com/recipes/${recipeId}/information`, {
                     params: {
-                        apiKey: '7bdf08411f7b4f11bd50b890000b3e58',
+                        apiKey: 'b942af6e9ba143c4a7ebaccc6013bcb0',
                     }
                 })
                 .then(response => {
                     this.selectedRecipe = response.data;
                     this.selectedRecipe.amount = response.data.extendedIngredients[0].amount;
                     this.selectedRecipe.originalName = response.data.extendedIngredients[0].originalName;
+                    this.selectedRecipe.unit = response.data.extendedIngredients[0].unit;
                     console.log('Selected Recipe:', this.selectedRecipe);
                     this.loading = false;
                 })
