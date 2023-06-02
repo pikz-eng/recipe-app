@@ -1,0 +1,40 @@
+#app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
+}
+
+h1 {
+    border-bottom: 1px solid #ddd;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    list-style-type: none;
+}
+
+li {
+    flex-basis: calc(33.33% - 20px);
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+li:hover {
+    transform: translateY(-3px);
+}
+.search-button-animation {
+    transition: transform 0.3s linear;
+}
+
+.search-button-animation:hover {
+    transform: translateY(-3px);
+}
+.input-container{
+    margin-bottom: 40px;
+}
