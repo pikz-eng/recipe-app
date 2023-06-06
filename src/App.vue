@@ -1,30 +1,25 @@
 <template>
     <div id="app">
         <h1>{{ title }}</h1>
-        <div>
-            <input class="input-container" v-model="searchInput" type="text" placeholder="insert the ingredients"
-                   @keydown.enter="search" required>
-            <button class="search-button-animation" @click="search">Search</button>
-            <p v-if="!inputValid" class="error-message error-text" >{{ inputErrorMessage }}</p>
+        <div class="recipe-app-input-group">
+            <div class="input-group">
+                <input class="form-control" v-model="searchInput" type="text" placeholder="Insert the ingredients"
+                       @keydown.enter="search" required>
+
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="search">Search
+                </button>
+            </div>
+            <p v-if="!inputValid" class="error-message error-text">{{ inputErrorMessage }}</p>
         </div>
 
         <div v-if="recipes.length > 0">
             <h2>Recipes:</h2>
-            <ul>
-                <li v-for="recipe in recipes" :key="recipe.id" @click="getRecipeInformation(recipe.id)">
+            <ul class="list-group">
+                <li class="list-group-item" v-for="recipe in recipes" :key="recipe.id">
                     <h3>{{ recipe.title }}</h3>
-                    <img :src="recipe.image" alt="Recipe Image" width="200"/>
-                    <div v-if="recipe.id === selectedRecipe.id">
-                        <h2>Recipe Information:</h2>
-                        <h3>{{ selectedRecipe.title }}
-                            <span class="badge badge-secondary">New</span>
-                        </h3>
-                        <p>Amount: {{ selectedRecipe.amount }}</p>
-                        <p>Unit: {{ selectedRecipe.unit }}</p>
-                        <p>Original Name: {{ selectedRecipe.originalName }}</p>
-                        <p>Summary:<span v-html="selectedRecipe.summary"></span></p>
+                    <img :src="recipe.image" alt="Recipe Image" class="img-fluid"/>
+                    <button class="btn btn-primary" @click="getRecipeInformation(recipe.id)">Informations</button>
 
-                    </div>
                 </li>
             </ul>
         </div>
@@ -35,12 +30,33 @@
         <div v-if="loading">
             <p>Loading...</p>
         </div>
+        <div v-if="selectedRecipe" id="myModal" class="modal" tabindex="-1" data-bs-toggle="modal" data-bs-target="#myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ selectedRecipe.title }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Amount: {{ selectedRecipe.amount }}</p>
+                        <p>Unit: {{ selectedRecipe.unit }}</p>
+                        <p>Original Name: {{ selectedRecipe.originalName }}</p>
+                        <p>Summary: <span v-html="selectedRecipe.summary"></span></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                @click="closeModal">Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
 import axios from 'axios';
-import './components/style.css';
 
 export default {
     name: 'App',
@@ -49,18 +65,17 @@ export default {
             title: 'Recipe-App',
             searchInput: '',
             recipes: [],
-            selectedRecipe: [],
+            selectedRecipe: {},
             inputValid: true,
             inputErrorMessage: '',
-            loading: false
+            loading: false,
         };
     },
-
     methods: {
         search() {
             if (this.searchInput.length < 2) {
                 this.inputValid = false;
-                this.inputErrorMessage = "The input must contain min 2 characters";
+                this.inputErrorMessage = "The input must contain at least 2 characters";
                 return;
             }
 
@@ -77,48 +92,54 @@ export default {
                 .get('https://api.spoonacular.com/recipes/findByIngredients', {
                     params: {
                         ingredients: this.searchInput,
-                        apiKey: 'b942af6e9ba143c4a7ebaccc6013bcb0',
+                        apiKey: '7bdf08411f7b4f11bd50b890000b3e58',
                         number: 12
                     }
                 })
                 .then(response => {
                     this.recipes = response.data;
+                    this.loading = false;
                     console.log('Recipe:', this.recipes);
-
-
                 })
                 .catch(error => {
-                    console.error('Error to search ingredients:', error);
+                    console.error('Error searching ingredients:', error);
                 });
         },
         getRecipeInformation(recipeId) {
             this.loading = true;
             if (this.selectedRecipe.id === recipeId) {
-                this.selectedRecipe = [];
+                this.selectedRecipe = {};
                 this.loading = false;
                 return;
             }
             axios
                 .get(`https://api.spoonacular.com/recipes/${recipeId}/information`, {
                     params: {
-                        apiKey: 'b942af6e9ba143c4a7ebaccc6013bcb0',
+                        apiKey: '7bdf08411f7b4f11bd50b890000b3e58',
                     }
                 })
                 .then(response => {
-                    this.selectedRecipe = response.data;
-                    this.selectedRecipe.amount = response.data.extendedIngredients[0].amount;
-                    this.selectedRecipe.originalName = response.data.extendedIngredients[0].originalName;
-                    this.selectedRecipe.unit = response.data.extendedIngredients[0].unit;
-                    console.log('Selected Recipe:', this.selectedRecipe);
+                    const selectedRecipe = response.data;
+                    const ingredient = response.data.extendedIngredients[0];
+                    selectedRecipe.amount = ingredient.amount;
+                    selectedRecipe.originalName = ingredient.originalName;
+                    selectedRecipe.unit = ingredient.unit;
+                    console.log('Selected Recipe:', selectedRecipe);
+                    this.selectedRecipe = selectedRecipe;
                     this.loading = false;
+
+                    const myModal = new bootstrap.Modal(document.querySelector('#myModal'));
+                    myModal.show();
                 })
                 .catch(error => {
                     console.error('Error fetching recipe details:', error);
                     this.loading = false;
                 });
+        },
+        closeModal() {
+            const myModal = new bootstrap.Modal(document.querySelector('#myModal'));
+            myModal.hide();
         }
     }
 };
 </script>
-
-
