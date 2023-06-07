@@ -48,7 +48,6 @@ h2 {
     position: relative;
     width: 18rem;
     height: auto;
-    margin-bottom: 20px;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -57,27 +56,6 @@ h2 {
 .card.show {
     opacity: 1;
     visibility: visible;
-}
-
-.card-title {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    margin-bottom: 30px;
-}
-
-.card-img-top {
-    max-height: 200px;
-    max-width: 100%;
-    object-fit: cover;
-}
-
-.card-title:hover {
-    overflow: visible;
-    white-space: normal;
 }
 
 .card-title[title]:hover::before {
@@ -93,69 +71,32 @@ h2 {
     border-radius: 4px;
     white-space: normal;
 }
-
-.card-body {
-    flex: 1;
+.card-img-top {
+    max-height: 200px;
+    max-width: 100%;
+    object-fit: cover;
 }
+.card-title {
 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    margin-bottom: 30px;
+    font-size: 16px;
+    height: 40px;
 
-.card-body button {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
 }
-
-.card {
-    width: 90%;
-    height: auto;
+.recipe-app-input-group {
     margin-bottom: 20px;
 }
 
-.card.smaller-card {
-    width: calc(20% - 10px);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin: 30px;
-
+.container {
+    padding-top: 20px;
 }
 
-@media (min-width: 576px) {
-    .recipe-app-input-group {
-        flex-direction: row;
-        justify-content: center;
-    }
-
-    .card.smaller-card {
-        width: calc(33.33% - 10px);
-        margin:25px;
-
-    }
-}
-
-@media (min-width: 768px) {
-    .card.smaller-card {
-        width: calc(33.33% - 20px);
-    }
-}
-
-@media (min-width: 992px) {
-    .card.smaller-card {
-        width: calc(25% - 20px);
-    }
-}
-@media (max-width: 1800px) {
-    .recipe-app-input-group {
-        flex-direction: row;
-        justify-content: center;
-    }
-
-    .card.smaller-card {
-        width: calc(33.33% - 4%);
-        margin: 2%;
-
-    }
-}
 .modal {
     opacity: 0;
     visibility: hidden;

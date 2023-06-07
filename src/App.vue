@@ -12,23 +12,25 @@
             <p v-if="!inputValid" class="error-message error-text">{{ inputErrorMessage }}</p>
         </div>
 
-        <div v-if="recipes.length > 0">
-            <h2>Recipes:</h2>
-            <div class="d-flex flex-wrap">
-                <div class="card smaller-card" style="width: 18rem;" v-for="recipe in recipes" :key="recipe.id ">
-                    <img :src="recipe.image" class="card-img-top" alt="Recipe Image">
-                    <div class="card-body">
-                        <h5 class="card-title" :title="recipe.title">{{ recipe.title }}</h5>
-                        <button class="btn btn-primary" @click="getRecipeInformation(recipe.id)">Information</button>
+        <div class="container">
+            <h2 v-if="recipes.length > 0">Recipes:</h2>
+            <div class="row">
+                <div v-if="recipes.length > 0" class="col-12 col-md-6 col-lg-3 col-xl-3" v-for="recipe in recipes" :key="recipe.id">
+                    <div class="card text-center mb-3">
+                        <img :src="recipe.image" class="card-img-top" alt="Recipe Image">
+                        <div class="card-body">
+                            <h5 class="card-title" :title="recipe.title">{{ recipe.title }}</h5>
+                            <button class="btn btn-primary p-2" @click="getRecipeInformation(recipe.id)">Informations</button>
+                        </div>
                     </div>
+                </div>
+
+                <div v-else-if="searchInput && !loading">
+                    <h2>No recipes found.</h2>
                 </div>
             </div>
         </div>
 
-
-        <div v-else-if="searchInput && !loading">
-            <p>No recipes found.</p>
-        </div>
         <div v-if="loading">
             <p>Loading...</p>
         </div>
@@ -95,8 +97,8 @@ export default {
                 .get('https://api.spoonacular.com/recipes/findByIngredients', {
                     params: {
                         ingredients: this.searchInput,
-                        apiKey: '3cf80afad1f448808f468fe68948071b',
-                        number: 42
+                        apiKey: 'b942af6e9ba143c4a7ebaccc6013bcb0',
+                        number: 44
                     }
                 })
                 .then(response => {
@@ -125,7 +127,7 @@ export default {
             axios
                 .get(`https://api.spoonacular.com/recipes/${recipeId}/information`, {
                     params: {
-                        apiKey: '3cf80afad1f448808f468fe68948071b',
+                        apiKey: 'b942af6e9ba143c4a7ebaccc6013bcb0',
                     }
                 })
                 .then(response => {
