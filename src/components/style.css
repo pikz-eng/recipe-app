@@ -6,38 +6,28 @@
     color: #2c3e50;
     margin-top: 60px;
 }
-
+.form-control::placeholder {
+    font-style: italic;
+}
+.modal-footer button.btn-secondary:hover {
+    background-color: #0a58ca;
+    color: white;
+}
+.btn-outline-secondary:hover {
+    background-color: #0a58ca;
+    color: white;
+}
 h1 {
+    font-family: "Apple Color Emoji",cursive;
     border-bottom: 1px solid #ddd;
     display: inline-block;
     padding-bottom: 10px;
 }
-
-/*ul {*/
-/*    display: flex;*/
-/*    flex-wrap: wrap;*/
-/*    justify-content: space-between;*/
-/*    list-style-type: none;*/
-/*}*/
-
-.list-group {
-
-    margin-bottom: 20px;
-    cursor:pointer;
+h2 {
+    font-family: "Apple Color Emoji",cursive;
+    padding-top: 15px;
+    padding-bottom: 10px;
 }
-li:hover {
-    transform: translateY(-3px);
-}
-/*.search-button-animation {*/
-/*    transition: transform 0.3s linear;*/
-/*}*/
-
-/*.search-button-animation:hover {*/
-/*    transform: translateY(-3px);*/
-/*}*/
-/*.input-container{*/
-/*    margin-bottom: 40px;*/
-/*}*/
 
 .error-text {
     color: red;
@@ -49,4 +39,115 @@ li:hover {
     justify-content: center;
     margin: 0 auto;
     max-width: 500px;
+}
+
+
+.card {
+    position: relative;
+    width: 18rem;
+    height: auto;
+    margin-bottom: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.card.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.card-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    margin-bottom: 30px;
+}
+
+.card-img-top {
+    max-height: 200px;
+    max-width: 100%;
+    object-fit: cover;
+}
+
+.card-title:hover {
+    overflow: visible;
+    white-space: normal;
+}
+
+.card-title[title]:hover::before {
+    content: attr(title);
+    position: absolute;
+    z-index: 999;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    white-space: normal;
+}
+
+.card-body {
+    flex: 1;
+}
+
+
+.card-body button {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+.card {
+    width: 90%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.card.smaller-card {
+    width: calc(20% - 10px);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin: 30px;
+}
+
+@media (min-width: 576px) {
+    .recipe-app-input-group {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .card.smaller-card {
+        width: calc(33.33% - 10px);
+        margin:20px;
+
+    }
+}
+
+@media (min-width: 768px) {
+    .card.smaller-card {
+        width: calc(33.33% - 20px);
+    }
+}
+
+@media (min-width: 992px) {
+    .card.smaller-card {
+        width: calc(25% - 20px);
+    }
+}
+.modal {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal.show {
+    opacity: 1;
+    visibility: visible;
 }

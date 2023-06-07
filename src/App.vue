@@ -14,15 +14,17 @@
 
         <div v-if="recipes.length > 0">
             <h2>Recipes:</h2>
-            <ul class="list-group">
-                <li class="list-group-item" v-for="recipe in recipes" :key="recipe.id">
-                    <h3>{{ recipe.title }}</h3>
-                    <img :src="recipe.image" alt="Recipe Image" class="img-fluid"/>
-                    <button class="btn btn-primary" @click="getRecipeInformation(recipe.id)">Informations</button>
-
-                </li>
-            </ul>
+            <div class="d-flex flex-wrap">
+                <div class="card smaller-card" style="width: 18rem;" v-for="recipe in recipes" :key="recipe.id ">
+                    <img :src="recipe.image" class="card-img-top" alt="Recipe Image">
+                    <div class="card-body">
+                        <h5 class="card-title" :title="recipe.title">{{ recipe.title }}</h5>
+                        <button class="btn btn-primary" @click="getRecipeInformation(recipe.id)">Information</button>
+                    </div>
+                </div>
+            </div>
         </div>
+
 
         <div v-else-if="searchInput && !loading">
             <p>No recipes found.</p>
@@ -30,7 +32,8 @@
         <div v-if="loading">
             <p>Loading...</p>
         </div>
-        <div v-if="selectedRecipe" id="myModal" class="modal" tabindex="-1" data-bs-toggle="modal" data-bs-target="#myModal">
+        <div v-if="selectedRecipe" id="myModal" class="modal" tabindex="-1" data-bs-toggle="modal"
+             data-bs-target="#myModal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -92,15 +95,22 @@ export default {
                 .get('https://api.spoonacular.com/recipes/findByIngredients', {
                     params: {
                         ingredients: this.searchInput,
-                        apiKey: '7bdf08411f7b4f11bd50b890000b3e58',
-                        number: 12
+                        apiKey: '3cf80afad1f448808f468fe68948071b',
+                        number: 42
                     }
                 })
                 .then(response => {
                     this.recipes = response.data;
                     this.loading = false;
                     console.log('Recipe:', this.recipes);
+                    setTimeout(() => {
+                        const cards = document.querySelectorAll('.card');
+                        cards.forEach(card => {
+                            card.classList.add('show');
+                        });
+                    }, 100);
                 })
+
                 .catch(error => {
                     console.error('Error searching ingredients:', error);
                 });
@@ -115,7 +125,7 @@ export default {
             axios
                 .get(`https://api.spoonacular.com/recipes/${recipeId}/information`, {
                     params: {
-                        apiKey: '7bdf08411f7b4f11bd50b890000b3e58',
+                        apiKey: '3cf80afad1f448808f468fe68948071b',
                     }
                 })
                 .then(response => {
