@@ -46,7 +46,6 @@ h2 {
 
 .card {
     position: relative;
-    width: 18rem;
     height: auto;
     opacity: 0;
     visibility: hidden;

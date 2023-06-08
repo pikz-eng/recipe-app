@@ -3,7 +3,8 @@
         <h1>{{ title }}</h1>
         <div class="recipe-app-input-group">
             <div class="input-group">
-                <input class="form-control" v-model="searchInput" type="text" placeholder="Insert the ingredients"
+                <input @keydown="search" class="form-control" v-model="searchInput" type="text"
+                       placeholder="Insert the ingredients"
                        @keydown.enter="search" required>
 
                 <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="search">Search
@@ -12,15 +13,17 @@
             <p v-if="!inputValid" class="error-message error-text">{{ inputErrorMessage }}</p>
         </div>
 
-        <div class="container">
+        <div class="container-fluid">
             <h2 v-if="recipes.length > 0">Recipes:</h2>
             <div class="row">
-                <div v-if="recipes.length > 0" class="col-12 col-md-6 col-lg-3 col-xl-3" v-for="recipe in recipes" :key="recipe.id">
+                <div v-if="recipes.length > 0" class="col-12 col-md-6 col-lg-3 col-xl-3" v-for="recipe in recipes"
+                     :key="recipe.id">
                     <div class="card text-center mb-3">
                         <img :src="recipe.image" class="card-img-top" alt="Recipe Image">
                         <div class="card-body">
                             <h5 class="card-title" :title="recipe.title">{{ recipe.title }}</h5>
-                            <button class="btn btn-primary p-2" @click="getRecipeInformation(recipe.id)">Informations</button>
+                            <button class="btn btn-primary p-2" @click="getRecipeInformation(recipe.id)">Informations
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -62,6 +65,7 @@
 
 <script>
 import axios from 'axios';
+import {debounce} from 'lodash';
 
 export default {
     name: 'App',
@@ -77,29 +81,30 @@ export default {
         };
     },
     methods: {
-        search() {
+
+        search: debounce(function () {
             if (this.searchInput.length < 2) {
                 this.inputValid = false;
-                this.inputErrorMessage = "The input must contain at least 2 characters";
+                this.inputErrorMessage = 'The input must contain at least 2 characters';
                 return;
             }
 
             const containsNumbers = /\d/.test(this.searchInput);
             if (containsNumbers) {
                 this.inputValid = false;
-                this.inputErrorMessage = "The input cannot contain digits";
+                this.inputErrorMessage = 'The input cannot contain digits';
                 return;
             }
             this.inputValid = true;
-            this.inputErrorMessage = "";
+            this.inputErrorMessage = '';
             this.loading = true;
             axios
                 .get('https://api.spoonacular.com/recipes/findByIngredients', {
                     params: {
                         ingredients: this.searchInput,
                         apiKey: 'b942af6e9ba143c4a7ebaccc6013bcb0',
-                        number: 44
-                    }
+                        number: 44,
+                    },
                 })
                 .then(response => {
                     this.recipes = response.data;
@@ -112,11 +117,10 @@ export default {
                         });
                     }, 100);
                 })
-
                 .catch(error => {
                     console.error('Error searching ingredients:', error);
                 });
-        },
+        }, 1000),
         getRecipeInformation(recipeId) {
             this.loading = true;
             if (this.selectedRecipe.id === recipeId) {
